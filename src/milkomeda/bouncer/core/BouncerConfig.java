@@ -83,8 +83,4 @@ public class BouncerConfig {
     public boolean isAutoRoleEnabled() {
         return autoRoleEnabled;
     }
-
-    public void setAutoRoleEnabled(boolean autoRoleEnabled) {
-        this.autoRoleEnabled = autoRoleEnabled;
-    }
 }
