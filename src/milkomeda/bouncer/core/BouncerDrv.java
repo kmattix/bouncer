@@ -24,12 +24,12 @@ public class BouncerDrv{
 			System.out.println(cfgFile.getName() + " read");
 		}
 		else{
-			cfg = new BouncerConfig();
+			cfg = new BouncerConfig(cfgFile);
 			System.out.println(cfgFile.getName() + " created");
 		}
 
 		JDA jda = JDABuilder.create(args[0], GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES)
-				.addEventListeners(new GuildMemberJoin(), new MessageReceived(cfg))
+				.addEventListeners(new GuildMemberJoin(cfg), new MessageReceived(cfg), new GuildMemberLeave())
 				.setActivity(Activity.watching("for new members"))
 				.build();
 		jda.awaitReady();
