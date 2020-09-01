@@ -66,10 +66,7 @@ public class BouncerConfig {
      */
     public void setAutoRoleID(String autoRoleID){
         this.autoRoleID = autoRoleID;
-        if(autoRoleID != null)
-            this.autoRoleEnabled = true;
-        else
-            this.autoRoleEnabled = false;
+        this.autoRoleEnabled = autoRoleID != null;
     }
 
     public String getCmdPrefix() {
