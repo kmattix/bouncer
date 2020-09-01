@@ -1,4 +1,4 @@
-package milkomeda.bouncer.core;
+package milkomeda.bouncer.core.listeners;
 
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
