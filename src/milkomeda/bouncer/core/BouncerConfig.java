@@ -7,29 +7,36 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class BouncerConfig {
-    private String cmdPrefix;
+    private File cfgFile;
+    private String cmdPrefix, autoRoleID;
     private boolean autoRoleEnabled;
 
-    public BouncerConfig(String cmdPrefix, boolean autoRoleEnabled) {
+    public BouncerConfig(File cfgFile, String cmdPrefix, String autoRoleID, boolean autoRoleEnabled) {
+        this.cfgFile = cfgFile;
         this.cmdPrefix = cmdPrefix;
+        this.autoRoleID = autoRoleID;
         this.autoRoleEnabled = autoRoleEnabled;
     }
 
-    public BouncerConfig() throws IOException {
+    public BouncerConfig(File cfgFile) throws IOException {
+        this.cfgFile = cfgFile;
         this.cmdPrefix = "!";
+        this.autoRoleID = null;
         this.autoRoleEnabled = false;
-        writeConfig(new File("bouncer.cfg"));
+        writeConfig();
     }
 
-    public void writeConfig(File cfgFile) throws IOException {
+    public void writeConfig() throws IOException {
         FileWriter cfgFW = new FileWriter(cfgFile);
         cfgFW.write("cmdPrefix= " + cmdPrefix +
+                "\nautoRoleID= " + autoRoleID +
                 "\nautoRoleEnabled= " + autoRoleEnabled);
         cfgFW.close();
     }
 
     public static BouncerConfig readConfig(File cfgFile) throws FileNotFoundException {
         String cfgCmdPrefix = "";
+        String autoRoleID = "";
         boolean cfgAutoRoleEnabled = false;
         Scanner fileScan = new Scanner(cfgFile);
         Scanner lineScan;
@@ -40,9 +47,29 @@ public class BouncerConfig {
             cfgCmdPrefix = lineScan.next();
             lineScan = new Scanner(fileScan.nextLine());
             lineScan.next();
+            autoRoleID = lineScan.next();
+            lineScan = new Scanner(fileScan.nextLine());
+            lineScan.next();
             cfgAutoRoleEnabled = lineScan.nextBoolean();
+            lineScan.close();
         }
-        return new BouncerConfig(cfgCmdPrefix, cfgAutoRoleEnabled);
+        fileScan.close();
+        return new BouncerConfig(cfgFile, cfgCmdPrefix, autoRoleID, cfgAutoRoleEnabled);
+    }
+
+    public String getAutoRoleID(){
+        return autoRoleID;
+    }
+
+    /**
+     * @param autoRoleID no case sensitive string for the role, {@code null} if removing auto roll
+     */
+    public void setAutoRoleID(String autoRoleID){
+        this.autoRoleID = autoRoleID;
+        if(autoRoleID != null)
+            this.autoRoleEnabled = true;
+        else
+            this.autoRoleEnabled = false;
     }
 
     public String getCmdPrefix() {
