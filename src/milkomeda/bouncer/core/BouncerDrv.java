@@ -25,6 +25,6 @@ public class BouncerDrv{
 				.build();
 		jda.awaitReady();
 
-		// TODO: 9/3/2020 verify that there are no data base entries the JDA is not servicing
+		db.updateGuildEntries(jda);
 	}
 }
