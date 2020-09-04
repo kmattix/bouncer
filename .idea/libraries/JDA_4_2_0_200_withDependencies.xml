@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="JDA-4.2.0_200-withDependencies">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/JDA-4.2.0_200-withDependencies.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/JDA-4.2.0_200-withDependencies.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
