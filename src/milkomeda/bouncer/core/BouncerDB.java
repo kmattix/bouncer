@@ -2,38 +2,34 @@ package milkomeda.bouncer.core;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class BouncerDB{
-	private String ip, username, password;
+	final private String IP, USERNAME, PASSWORD;
 	private Connection connect;
 
 
 	public BouncerDB(String ip, String username, String password){
-		this.ip = ip;
-		this.username = username;
-		this.password = password;
+		IP = ip;
+		USERNAME = username;
+		PASSWORD = password;
+		readDataBase();
 	}
 
-	public void readDataBase() {
+	public BouncerDB(String username, String password) {
+		IP = "localhost";
+		USERNAME = username;
+		PASSWORD = password;
+		readDataBase();
+	}
+
+	private void readDataBase() {
 		try{
-			connect = DriverManager.getConnection("jdbc:mysql://" + ip + "?user=" + username + "&password=" + password);
+			connect = DriverManager.getConnection("jdbc:mysql://" + IP + "/bouncer?user=" + USERNAME + "&password=" + PASSWORD);
 		}catch(Exception e){
-			e.printStackTrace();
-		}
-	}
-
-	public void addGuild(long guildID, String guildName, String cmdPrefix, long roleID){
-		try{
-			Statement statement = connect.createStatement();
-			statement.executeUpdate(String.format("INSERT INTO guild VALUES(%d,'%s','%s',%d,NOW());",
-					guildID, guildName, cmdPrefix, roleID));
-			statement.close();
-		} catch(SQLException e){
 			e.printStackTrace();
 		}
 	}
@@ -195,5 +191,16 @@ public class BouncerDB{
 		} catch(SQLException e){
 			e.printStackTrace();
 		}
+	}
+
+	public boolean testConnection(){
+		boolean status;
+		try{
+			connect.createStatement();
+			status = true;
+		} catch (NullPointerException | SQLException e){
+			status = false;
+		}
+		return status;
 	}
 }
