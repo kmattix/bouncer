@@ -1,10 +1,11 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="bouncer:jar">
+  <artifact type="jar" build-on-make="true" name="bouncer:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/bouncer_jar</output-path>
     <root id="archive" name="bouncer.jar">
       <element id="module-output" name="bouncer" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/JDA-4.2.0_200-withDependencies.jar" path-in-jar="/" />
       <element id="library" level="project" name="JDA-4.2.0_200-withDependencies" />
+      <element id="library" level="project" name="mysql-connector-java-8.0.21" />
     </root>
   </artifact>
 </component>
