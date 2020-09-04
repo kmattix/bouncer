@@ -198,7 +198,7 @@ public class BouncerDB{
 		try{
 			connect.createStatement();
 			status = true;
-		} catch (NullPointerException | SQLException e){
+		} catch(NullPointerException | SQLException e){
 			status = false;
 		}
 		return status;
