@@ -8,19 +8,21 @@ import java.util.Date;
 import java.util.List;
 
 public class BouncerDB{
-	final private String IP, USERNAME, PASSWORD;
+	final private String IP, DATABASE, USERNAME, PASSWORD;
 	private Connection connect;
 
 
-	public BouncerDB(String ip, String username, String password){
+	public BouncerDB(String ip, String database, String username, String password){
 		IP = ip;
+		DATABASE = database;
 		USERNAME = username;
 		PASSWORD = password;
 		readDataBase();
 	}
 
-	public BouncerDB(String username, String password) {
+	public BouncerDB(String database, String username, String password) {
 		IP = "localhost";
+		DATABASE = database;
 		USERNAME = username;
 		PASSWORD = password;
 		readDataBase();
@@ -28,9 +30,9 @@ public class BouncerDB{
 
 	private void readDataBase() {
 		try{
-			connect = DriverManager.getConnection("jdbc:mysql://" + IP + "/bouncer?user=" + USERNAME + "&password=" + PASSWORD);
-		}catch(Exception e){
-			e.printStackTrace();
+			connect = DriverManager.getConnection("jdbc:mysql://" + IP + "/" + DATABASE + "?user=" + USERNAME + "&password=" + PASSWORD);
+		}catch(SQLException e){
+			System.out.println("Wrong database information...");
 		}
 	}
 
