@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" build-on-make="true" name="bouncer:jar">
+  <artifact type="jar" name="bouncer:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/bouncer_jar</output-path>
     <root id="archive" name="bouncer.jar">
       <element id="module-output" name="bouncer" />
