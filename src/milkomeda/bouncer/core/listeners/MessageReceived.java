@@ -60,8 +60,8 @@ public class MessageReceived extends ListenerAdapter{
 		embedBuilder.setTitle("bouncer help");
 		embedBuilder.addField("Info", "'bouncer' is still under development, " +
 				"please contact the creator for issues or suggestions.", false);
-		embedBuilder.addField("Commands", String.format("%sautorole null, role name, disable \n%shelp",
-				prefix, prefix), false);
+		embedBuilder.addField("Commands", String.format("%sautorole role name, disable\n%sprefix char\n%shelp",
+				prefix, prefix, prefix), false);
 		embedBuilder.setFooter("Created by " + milkomeda.getAsTag(), milkomeda.getAvatarUrl());
 		channel.sendMessage(embedBuilder.build()).queue();
 	}
