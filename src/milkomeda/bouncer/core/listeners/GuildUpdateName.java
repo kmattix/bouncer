@@ -7,15 +7,15 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 public class GuildUpdateName extends ListenerAdapter{
-	private BouncerDB db;
+	final private BouncerDB DB;
 
 	public GuildUpdateName(BouncerDB db){
-		this.db = db;
+		this.DB = db;
 	}
 
 	@Override
 	public void onGuildUpdateName(@NotNull GuildUpdateNameEvent event){
 		Guild guild = event.getGuild();
-		db.updateGuildName(guild.getIdLong(), event.getNewName());
+		DB.updateGuildName(guild.getIdLong(), event.getNewName());
 	}
 }

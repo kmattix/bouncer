@@ -2,6 +2,7 @@ package milkomeda.bouncer.core.listeners;
 
 import milkomeda.bouncer.core.BouncerDB;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -10,17 +11,17 @@ import org.jetbrains.annotations.NotNull;
 
 public class MessageReceived extends ListenerAdapter{
 
-	private BouncerDB db;
+	final private BouncerDB DB;
 	private String prefix;
 
 	public MessageReceived(BouncerDB db){
-		this.db = db;
+		DB = db;
 	}
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event){
 		Guild guild = event.getGuild();
-		prefix = db.getCmdPrefix(guild.getIdLong());
+		prefix = DB.getCmdPrefix(guild.getIdLong());
 		String[] args = event.getMessage().getContentRaw().split(" ");
 		if(args[0].equalsIgnoreCase(prefix + "autorole") && isAdmin(event))
 			autoRole(event, args);
@@ -41,19 +42,19 @@ public class MessageReceived extends ListenerAdapter{
 		MessageChannel channel = event.getChannel();
 		long guildID = event.getGuild().getIdLong();
 		if(args.length == 1){
-			if(db.getRoleID(guildID) != 0)
+			if(DB.getRoleID(guildID) != 0)
 				channel.sendMessage("Auto role is enabled!").queue();
 			else
 				channel.sendMessage("Auto role is disabled!").queue();
 		}
 		else if(args[1].equalsIgnoreCase("disable")){
-			db.updateRoleID(guildID);
+			DB.updateRoleID(guildID);
 			channel.sendMessage("Auto role is disabled!").queue();
 		}
 		else if(args.length == 2){
 			try{
 				Role role = event.getGuild().getRolesByName(args[1], true).get(0);
-				db.updateRoleID(guildID, role.getIdLong());
+				DB.updateRoleID(guildID, role.getIdLong());
 				channel.sendMessage(role.getAsMention() + " is now an auto role! **IMPORTANT:** Move the bouncer's role" +
 						" above the auto role or it wont be able to manage that role!").queue();
 			}catch(IndexOutOfBoundsException e){
@@ -78,7 +79,7 @@ public class MessageReceived extends ListenerAdapter{
 						"`%sautorole` {role name} | 'disable'\n" +
 								"`%sprefix` {char}\n" +
 								"%shelp", prefix, prefix, prefix), false);
-
+		assert milkomeda != null;
 		embedBuilder.setFooter("Created by " + milkomeda.getAsTag(), milkomeda.getAvatarUrl());
 		channel.sendMessage(embedBuilder.build()).queue();
 	}
@@ -87,11 +88,11 @@ public class MessageReceived extends ListenerAdapter{
 		MessageChannel channel = event.getChannel();
 		long guildID = event.getGuild().getIdLong();
 		if(args.length == 2 && args[1].length() == 1){
-			db.updateCmdPrefix(guildID, args[1]);
-			channel.sendMessage("'" + db.getCmdPrefix(guildID) + "' is the new command prefix!").queue();
+			DB.updateCmdPrefix(guildID, args[1]);
+			channel.sendMessage("'" + DB.getCmdPrefix(guildID) + "' is the new command prefix!").queue();
 		}
 		else if(args.length == 1)
-			channel.sendMessage("'" + db.getCmdPrefix(guildID) + "' is the command prefix!").queue();
+			channel.sendMessage("'" + DB.getCmdPrefix(guildID) + "' is the command prefix!").queue();
 		else
 			channel.sendMessage("'" + args[1] + "' is an invalid prefix!").queue();
 	}

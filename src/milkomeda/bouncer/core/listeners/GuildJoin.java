@@ -6,16 +6,16 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 public class GuildJoin extends ListenerAdapter{
-	private BouncerDB db;
+	final private BouncerDB DB;
 
 	public GuildJoin(BouncerDB db){
-		this.db = db;
+		DB = db;
 	}
 
 	@Override
 	public void onGuildJoin(@NotNull net.dv8tion.jda.api.events.guild.GuildJoinEvent event){
 		Guild guild = event.getGuild();
-		db.addGuild(guild.getIdLong(), guild.getName());
+		DB.addGuild(guild.getIdLong(), guild.getName());
 		System.out.println("Joined server " +  guild.getName() + " (ID " + guild.getIdLong() + ").");
 	}
 }

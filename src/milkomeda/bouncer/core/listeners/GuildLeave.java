@@ -8,16 +8,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class GuildLeave extends ListenerAdapter{
 
-	private BouncerDB db;
+	final private BouncerDB DB;
 
 	public GuildLeave(BouncerDB db){
-		this.db = db;
+		DB = db;
 	}
 
 	@Override
 	public void onGuildLeave(@NotNull GuildLeaveEvent event){
 		Guild guild = event.getGuild();
-		db.removeGuild(guild.getIdLong());
+		DB.removeGuild(guild.getIdLong());
 		System.out.println("Left server " + guild.getName() + " (ID " + guild.getIdLong() + ").");
 	}
 }
