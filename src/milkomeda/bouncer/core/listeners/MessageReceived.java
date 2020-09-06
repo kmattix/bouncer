@@ -55,12 +55,23 @@ public class MessageReceived extends ListenerAdapter{
 			try{
 				Role role = event.getGuild().getRolesByName(args[1], true).get(0);
 				DB.updateRoleID(guildID, role.getIdLong());
-				channel.sendMessage(role.getAsMention() + " is now an auto role! **IMPORTANT:** Move the bouncer's role" +
+				channel.sendMessage(args[1] + " is now an auto role! **IMPORTANT:** Move the bouncer's role" +
 						" above the auto role or it wont be able to manage that role!").queue();
 			}catch(IndexOutOfBoundsException e){
-				channel.sendMessage(args[1] + " is not a valid role!").queue();
+				createAutoRole(args[1], event);
 			}
 		}
+	}
+
+	private void createAutoRole(String roleName, MessageReceivedEvent event){
+		Message message = new MessageBuilder().setContent("No pre-existing role found, do you wish to create a new role with permissions" +
+				" copied from @ everyone?").build();
+		event.getChannel().sendMessage(message).queue(msg -> {
+			msg.addReaction("\u2705").queue();
+			msg.addReaction("\u274E").queue();
+		});
+		MessageReactionAdd.setUser(event.getAuthor());
+		MessageReactionAdd.setRoleName(roleName);
 	}
 
 	private void help(MessageReceivedEvent event){

@@ -19,9 +19,9 @@ public class BouncerDrv{
 		if(args.length == 5) db = new BouncerDB(args[1], args[2], args[3], args[4]);
 		else db = new BouncerDB(args[1], args[2], args[3]);
 
-		JDA jda = JDABuilder.create(args[0], GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES)
+		JDA jda = JDABuilder.create(args[0], GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS)
 				.addEventListeners(new GuildJoin(db), new GuildLeave(db), new GuildUpdateName(db))
-				.addEventListeners(new GuildMemberJoin(db), new MessageReceived(db))
+				.addEventListeners(new GuildMemberJoin(db), new MessageReceived(db), new MessageReactionAdd(db))
 				.setActivity(Activity.watching("new members | !help"))
 				.build();
 		jda.awaitReady();
