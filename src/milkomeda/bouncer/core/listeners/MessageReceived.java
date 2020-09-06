@@ -79,7 +79,7 @@ public class MessageReceived extends ListenerAdapter{
 		EmbedBuilder embedBuilder = new EmbedBuilder();
 		User milkomeda = event.getJDA().getUserById(151488174323924992L);
 
-		embedBuilder.setTitle("bouncer v1.0.4-beta");
+		embedBuilder.setTitle("bouncer v1.0.5-beta");
 		embedBuilder.addField(
 				"Info",
 				"Bouncer is still under development, please contact the creator for issues or suggestions.\n" +
