@@ -54,7 +54,8 @@ public class MessageReceived extends ListenerAdapter{
 			try{
 				Role role = event.getGuild().getRolesByName(args[1], true).get(0);
 				db.updateRoleID(guildID, role.getIdLong());
-				channel.sendMessage(role.getAsMention() + " is now an auto role!").queue();
+				channel.sendMessage(role.getAsMention() + " is now an auto role! **IMPORTANT:** Move the bouncer's role" +
+						" above the auto role or it wont be able to manage that role!").queue();
 			}catch(IndexOutOfBoundsException e){
 				channel.sendMessage(args[1] + " is not a valid role!").queue();
 			}
@@ -70,11 +71,12 @@ public class MessageReceived extends ListenerAdapter{
 		embedBuilder.addField(
 				"Info",
 				"Bouncer is still under development, please contact the creator for issues or suggestions.\n" +
-						"Bouncer is a member management bot designed to assign default roles to new members.", false);
+						"Bouncer is a member management bot designed to assign default roles to new members. Commands" +
+						" with `this` appearance need administrator permissions to be used.", false);
 		embedBuilder.addField(
 				"Commands", String.format(
-						"ADMIN %sautorole [role name], 'disable'\n" +
-								"ADMIN %sprefix [char]\n" +
+						"`%sautorole` {role name} | 'disable'\n" +
+								"`%sprefix` {char}\n" +
 								"%shelp", prefix, prefix, prefix), false);
 
 		embedBuilder.setFooter("Created by " + milkomeda.getAsTag(), milkomeda.getAvatarUrl());
