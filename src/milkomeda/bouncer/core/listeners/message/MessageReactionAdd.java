@@ -8,10 +8,10 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 public class MessageReactionAdd extends ListenerAdapter{
+
     private static User user;
     private static String roleName;
     private final BouncerDB DB;
-
 
     public MessageReactionAdd(BouncerDB db) {
         DB = db;
