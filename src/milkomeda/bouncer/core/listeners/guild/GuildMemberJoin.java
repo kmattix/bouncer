@@ -1,4 +1,4 @@
-package milkomeda.bouncer.core.listeners;
+package milkomeda.bouncer.core.listeners.guild;
 
 import milkomeda.bouncer.core.BouncerDB;
 import net.dv8tion.jda.api.entities.Guild;
