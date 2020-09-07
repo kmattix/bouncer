@@ -20,7 +20,7 @@ public class BouncerDrv{
 		else db = new BouncerDB(args[1], args[2], args[3]);
 
 		JDA jda = JDABuilder.create(args[0], GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS)
-				.addEventListeners(new GuildJoin(db), new GuildLeave(db), new GuildUpdateName(db))
+				.addEventListeners(new GuildJoin(db), new GuildLeave(db), new GuildUpdateName(db), new RoleDelete(db))
 				.addEventListeners(new GuildMemberJoin(db), new MessageReceived(db), new MessageReactionAdd(db))
 				.setActivity(Activity.watching("new members | !help"))
 				.build();
