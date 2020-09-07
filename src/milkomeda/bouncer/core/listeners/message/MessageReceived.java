@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class MessageReceived extends ListenerAdapter{
 
-	final private BouncerDB DB;
+	private final BouncerDB DB;
 	private String prefix;
 
 	public MessageReceived(BouncerDB db){

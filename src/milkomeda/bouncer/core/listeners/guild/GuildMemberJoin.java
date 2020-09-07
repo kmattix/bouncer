@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class GuildMemberJoin extends ListenerAdapter{
 
-	final private BouncerDB DB;
+	private final BouncerDB DB;
 
 	public GuildMemberJoin(BouncerDB db){
 		DB = db;

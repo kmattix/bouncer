@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 public class MessageReactionAdd extends ListenerAdapter{
     private static User user;
     private static String roleName;
-    final private BouncerDB DB;
+    private final BouncerDB DB;
 
 
     public MessageReactionAdd(BouncerDB db) {

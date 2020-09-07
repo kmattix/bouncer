@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class GuildLeave extends ListenerAdapter{
 
-	final private BouncerDB DB;
+	private final BouncerDB DB;
 
 	public GuildLeave(BouncerDB db){
 		DB = db;

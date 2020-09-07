@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class RoleDelete extends ListenerAdapter{
 
-    private BouncerDB DB;
+    private final BouncerDB DB;
 
     public RoleDelete(BouncerDB DB) {
         this.DB = DB;

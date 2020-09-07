@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 public class GuildUpdateName extends ListenerAdapter{
-	final private BouncerDB DB;
+	private final BouncerDB DB;
 
 	public GuildUpdateName(BouncerDB db){
 		this.DB = db;

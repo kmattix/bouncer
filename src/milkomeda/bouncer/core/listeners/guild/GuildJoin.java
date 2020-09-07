@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 public class GuildJoin extends ListenerAdapter{
-	final private BouncerDB DB;
+	private final BouncerDB DB;
 
 	public GuildJoin(BouncerDB db){
 		DB = db;
