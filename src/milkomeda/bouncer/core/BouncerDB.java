@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 public class BouncerDB{
-	final private String IP, DATABASE, USERNAME, PASSWORD;
+	private final String IP, DATABASE, USERNAME, PASSWORD;
 	private Connection connect;
 
 
@@ -20,20 +20,12 @@ public class BouncerDB{
 		readDataBase();
 	}
 
-	public BouncerDB(String database, String username, String password) {
+	public BouncerDB(String database, String username, String password) {    // TODO: 9/6/2020 figure out why this doesn't work
 		IP = "localhost";
 		DATABASE = database;
 		USERNAME = username;
 		PASSWORD = password;
 		readDataBase();
-	}
-
-	private void readDataBase() {
-		try{
-			connect = DriverManager.getConnection("jdbc:mysql://" + IP + "/" + DATABASE + "?user=" + USERNAME + "&password=" + PASSWORD);
-		}catch(SQLException e){
-			System.out.println("Wrong database information...");
-		}
 	}
 
 	public void addGuild(long guildID, String guildName){
@@ -204,5 +196,13 @@ public class BouncerDB{
 			status = false;
 		}
 		return status;
+	}
+
+	private void readDataBase() {
+		try{
+			connect = DriverManager.getConnection("jdbc:mysql://" + IP + "/" + DATABASE + "?user=" + USERNAME + "&password=" + PASSWORD);
+		}catch(SQLException e){
+			System.out.println("Wrong database information...");
+		}
 	}
 }
