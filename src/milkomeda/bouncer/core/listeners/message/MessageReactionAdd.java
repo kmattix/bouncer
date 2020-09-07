@@ -17,14 +17,6 @@ public class MessageReactionAdd extends ListenerAdapter{
         DB = db;
     }
 
-    public static void setUser(User user) {
-        MessageReactionAdd.user = user;
-    }
-
-    public static void setRoleName(String roleName) {
-        MessageReactionAdd.roleName = roleName;
-    }
-
     @Override
     public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event){
         if(roleName != null && user.getIdLong() == event.getUserIdLong()){  // TODO: 9/6/2020 this could cause a unique bug where someone reacts with the set emotes on another message it triggers this
@@ -43,5 +35,13 @@ public class MessageReactionAdd extends ListenerAdapter{
                 roleName = null;
             }
         }
+    }
+
+    public static void setUser(User user) {
+        MessageReactionAdd.user = user;
+    }
+
+    public static void setRoleName(String roleName) {
+        MessageReactionAdd.roleName = roleName;
     }
 }
