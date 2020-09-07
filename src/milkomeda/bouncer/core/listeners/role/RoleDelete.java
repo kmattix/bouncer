@@ -10,8 +10,8 @@ public class RoleDelete extends ListenerAdapter{
 
     private final BouncerDB DB;
 
-    public RoleDelete(BouncerDB DB) {
-        this.DB = DB;
+    public RoleDelete(BouncerDB db) {
+        DB = db;
     }
 
     @Override

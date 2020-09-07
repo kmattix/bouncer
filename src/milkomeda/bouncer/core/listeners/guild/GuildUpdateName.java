@@ -11,7 +11,7 @@ public class GuildUpdateName extends ListenerAdapter{
 	private final BouncerDB DB;
 
 	public GuildUpdateName(BouncerDB db){
-		this.DB = db;
+		DB = db;
 	}
 
 	@Override
