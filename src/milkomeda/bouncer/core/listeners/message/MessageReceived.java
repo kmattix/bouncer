@@ -69,8 +69,9 @@ public class MessageReceived extends ListenerAdapter{
 		event.getChannel().sendMessage(message).queue(msg -> {
 			msg.addReaction("\u2705").queue();
 			msg.addReaction("\u274E").queue();
+			MessageReactionAdd.setMsgId(msg.getIdLong());
 		});
-		MessageReactionAdd.setUser(event.getAuthor());
+		MessageReactionAdd.setUserId(event.getMember().getIdLong());
 		MessageReactionAdd.setRoleName(roleName);
 	}
 
