@@ -21,10 +21,10 @@ public class MessageReactionAdd extends ListenerAdapter{
         if(roleName != null && msgId == event.getMessageIdLong() && userId == event.getUserIdLong()){
             if(event.getReactionEmote().getName().equals("\u2705")){
                 Role newAutorole = event.getGuild().getPublicRole();
-                newAutorole.createCopy().setName(roleName).queue();
-                DB.updateRoleID(event.getGuild().getIdLong(), newAutorole.getIdLong());
-                event.getTextChannel().sendMessage(roleName + " is now an auto role! " +
-                        "**IMPORTANT:** Move the bouncer's role above the auto role or it wont be able to manage that role!").queue();
+                newAutorole.createCopy().setName(roleName).queue(role ->{
+                    DB.updateRoleID(event.getGuild().getIdLong(), role.getIdLong());
+                });
+                event.getTextChannel().sendMessage(roleName + " is now an auto role!").queue();
                 setMsgId(0);
                 setUserId(0);
                 roleName = null;
