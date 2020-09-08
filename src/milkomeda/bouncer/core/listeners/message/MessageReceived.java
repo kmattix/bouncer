@@ -53,9 +53,9 @@ public class MessageReceived extends ListenerAdapter{
 			DB.updateRoleID(guildID);
 			channel.sendMessage("Auto role is disabled!").queue();
 		}
-		else if(args[1].equalsIgnoreCase("update") && DB.getRoleID(guildID) != 0)
-			updateMembers(event);
-		else if(args.length == 2){
+		else if(DB.getRoleID(guildID) != 0 && args[1].equalsIgnoreCase("update"))
+			updateMembers(event.getGuild());
+		else if(DB.getRoleID(guildID) == 0 && args.length == 2){
 			try{
 				Role role = event.getGuild().getRolesByName(args[1], true).get(0);
 				DB.updateRoleID(guildID, role.getIdLong());
@@ -64,6 +64,9 @@ public class MessageReceived extends ListenerAdapter{
 			}catch(IndexOutOfBoundsException e){
 				createAutoRole(args[1], event);
 			}
+		}
+		else{
+			channel.sendMessage("Auto role is already enabled!").queue();
 		}
 	}
 
@@ -79,31 +82,15 @@ public class MessageReceived extends ListenerAdapter{
 		MessageReactionAdd.setRoleName(roleName);
 	}
 
-	private void updateMembers(MessageReceivedEvent event){
-		for (Member member : event.getGuild().getMemberCache()) {
-			// TODO: 9/8/2020 add some logic here to see if member has autorole then add it if not
+	private void updateMembers(Guild guild){
+		for(Member member : guild.getMemberCache()) {
+			List<Role> memberRoles = member.getRoles();
+			if(!memberRoles.contains(guild.getRoleById(DB.getRoleID(guild.getIdLong())))){
+				Role autoRole = guild.getRoleById(DB.getRoleID(guild.getIdLong()));
+				assert autoRole != null;
+				guild.addRoleToMember(member, autoRole).queue();
+			}
 		}
-	}
-
-	private void help(MessageReceivedEvent event){
-		MessageChannel channel = event.getChannel();
-		EmbedBuilder embedBuilder = new EmbedBuilder();
-		User milkomeda = event.getJDA().getUserById(151488174323924992L);
-
-		embedBuilder.setTitle("bouncer v1.0.6-beta");
-		embedBuilder.addField(
-				"Info",
-				"Bouncer is still under development, please contact the creator for issues or suggestions.\n" +
-						"Bouncer is a member management bot designed to assign default roles to new members. Commands" +
-						" with `this` appearance need administrator permissions to be used.", false);
-		embedBuilder.addField(
-				"Commands", String.format(
-						"`%sautorole` {role name} | 'disable'\n" +
-								"`%sprefix` {char}\n" +
-								"%shelp", prefix, prefix, prefix), false);
-		assert milkomeda != null;
-		embedBuilder.setFooter("Created by " + milkomeda.getAsTag(), milkomeda.getAvatarUrl());
-		channel.sendMessage(embedBuilder.build()).queue();
 	}
 
 	private void prefix(MessageReceivedEvent event, String[] args){
@@ -117,5 +104,26 @@ public class MessageReceived extends ListenerAdapter{
 			channel.sendMessage("'" + DB.getCmdPrefix(guildID) + "' is the command prefix!").queue();
 		else
 			channel.sendMessage("'" + args[1] + "' is an invalid prefix!").queue();
+	}
+
+	private void help(MessageReceivedEvent event){
+		MessageChannel channel = event.getChannel();
+		EmbedBuilder embedBuilder = new EmbedBuilder();
+		User milkomeda = event.getJDA().getUserById(151488174323924992L);
+
+		embedBuilder.setTitle("bouncer v1.0.8-beta");
+		embedBuilder.addField(
+				"Info",
+				"Bouncer is still under development, please contact the creator for issues or suggestions.\n" +
+						"Bouncer is a member management bot designed to assign default roles to new members. Commands" +
+						" with `this` appearance need administrator permissions to be used.", false);
+		embedBuilder.addField(
+				"Commands", String.format(
+						"`%sautorole` {role name} | 'disable' | 'update' - create or add existing role, turn off, add all existing members to role.\n" +
+								"`%sprefix` {char} - change the command prefix.\n" +
+								"%shelp", prefix, prefix, prefix), false);
+		assert milkomeda != null;
+		embedBuilder.setFooter("Created by " + milkomeda.getAsTag(), milkomeda.getAvatarUrl());
+		channel.sendMessage(embedBuilder.build()).queue();
 	}
 }
