@@ -9,6 +9,8 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class MessageReceived extends ListenerAdapter{
 
 	private final BouncerDB DB;
@@ -51,6 +53,8 @@ public class MessageReceived extends ListenerAdapter{
 			DB.updateRoleID(guildID);
 			channel.sendMessage("Auto role is disabled!").queue();
 		}
+		else if(args[1].equalsIgnoreCase("update") && DB.getRoleID(guildID) != 0)
+			updateMembers(event);
 		else if(args.length == 2){
 			try{
 				Role role = event.getGuild().getRolesByName(args[1], true).get(0);
@@ -73,6 +77,12 @@ public class MessageReceived extends ListenerAdapter{
 		});
 		MessageReactionAdd.setUserId(event.getMember().getIdLong());
 		MessageReactionAdd.setRoleName(roleName);
+	}
+
+	private void updateMembers(MessageReceivedEvent event){
+		for (Member member : event.getGuild().getMemberCache()) {
+			// TODO: 9/8/2020 add some logic here to see if member has autorole then add it if not
+		}
 	}
 
 	private void help(MessageReceivedEvent event){
