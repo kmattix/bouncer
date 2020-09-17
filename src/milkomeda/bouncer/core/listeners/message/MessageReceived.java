@@ -12,14 +12,23 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Class listener for when the JDA retrieves a message.
+ */
 public class MessageReceived extends ListenerAdapter{
 
 	private final BouncerDB DB;
 
+	/**
+	 * @param db Database connection.
+	 */
 	public MessageReceived(BouncerDB db){
 		DB = db;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event){
 		String cmdPrefix = DB.getCmdPrefix(event.getGuild().getIdLong());
