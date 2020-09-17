@@ -14,7 +14,7 @@ public class Help extends Command{
 
 	private final BouncerDB DB;
 	private final String NAME = "help";
-	private final String VERSION = "bouncer v1.0.8-beta";
+	private final String VERSION = "bouncer v1.0.10-beta";
 
 	/**
 	 * @param db Database connection.
