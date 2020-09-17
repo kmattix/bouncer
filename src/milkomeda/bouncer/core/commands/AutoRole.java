@@ -10,20 +10,32 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.List;
 
+/**
+ * Sub class of {@code Command} that is used for the autorole functionality.
+ */
 public class AutoRole extends Command{
 
 	final private BouncerDB DB;
 	final private String NAME = "autorole";
 
+	/**
+	 * @param db Database connection.
+	 */
 	public AutoRole(BouncerDB db){
 		DB = db;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getName(){
 		return NAME;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean canExecute(Member member){
 		boolean result = false;
@@ -32,6 +44,9 @@ public class AutoRole extends Command{
 		return result;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void execute(String[] args, MessageReceivedEvent event){
 		MessageChannel channel = event.getChannel();
@@ -63,6 +78,13 @@ public class AutoRole extends Command{
 		}
 	}
 
+	/**
+	 * Method for when the user tries to add an auto role but it doesn't already exist in the server. It then waits for
+	 * a {@code MessageReactionAdd} event for a confirmation dialog.
+	 *
+	 * @param roleName Name of the auto role to create.
+	 * @param event Event where reaction needs to be added.
+	 */
 	private void createAutoRole(String roleName, MessageReceivedEvent event){
 		Message message = new MessageBuilder().setContent("No pre-existing role found, do you wish to create a new role with permissions" +
 				" copied from @ everyone?").build();
@@ -75,6 +97,11 @@ public class AutoRole extends Command{
 		MessageReactionAdd.setRoleName(roleName);
 	}
 
+	/**
+	 * Param argument for for when the administrator wants to add all existing members to the auto role.
+	 *
+	 * @param guild Guild to update the member roles on.
+	 */
 	private void updateMembers(Guild guild){
 		for(Member member : guild.getMemberCache()) {
 			List<Role> memberRoles = member.getRoles();

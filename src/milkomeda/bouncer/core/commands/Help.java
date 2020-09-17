@@ -7,21 +7,33 @@ import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+/**
+ * Sub class of {@code Command} that is used to display the help embed.
+ */
 public class Help extends Command{
 
 	private final BouncerDB DB;
 	private final String NAME = "help";
 	private final String VERSION = "bouncer v1.0.8-beta";
 
+	/**
+	 * @param db Database connection.
+	 */
 	public Help(BouncerDB db){
 		DB = db;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getName(){
 		return NAME;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void execute(String[] args, MessageReceivedEvent event){
 		MessageChannel channel = event.getChannel();

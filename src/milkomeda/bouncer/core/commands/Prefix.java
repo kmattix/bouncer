@@ -7,6 +7,9 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+/**
+ * Sub class of {@code Command} that is used to change the command prefix.
+ */
 public class Prefix extends Command{
 
 	private final BouncerDB DB;
@@ -16,11 +19,17 @@ public class Prefix extends Command{
 		DB = db;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String getName(){
 		return NAME;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean canExecute(Member member){
 		boolean result = false;
@@ -29,6 +38,9 @@ public class Prefix extends Command{
 		return result;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void execute(String[] args, MessageReceivedEvent event){
 		MessageChannel channel = event.getChannel();
