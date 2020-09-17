@@ -6,14 +6,23 @@ import net.dv8tion.jda.api.events.role.RoleDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Class listener for when a role gets deleted.
+ */
 public class RoleDelete extends ListenerAdapter{
 
     private final BouncerDB DB;
 
+    /**
+     * @param db Database connection.
+     */
     public RoleDelete(BouncerDB db) {
         DB = db;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onRoleDelete(@NotNull RoleDeleteEvent event) {
         Guild guild = event.getGuild();
