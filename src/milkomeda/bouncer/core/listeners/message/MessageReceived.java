@@ -1,20 +1,20 @@
 package milkomeda.bouncer.core.listeners.message;
 
 import milkomeda.bouncer.core.BouncerDB;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.MessageBuilder;
-import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.*;
+import milkomeda.bouncer.core.Command;
+import milkomeda.bouncer.core.commands.AutoRole;
+import milkomeda.bouncer.core.commands.Help;
+import milkomeda.bouncer.core.commands.Prefix;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MessageReceived extends ListenerAdapter{
 
 	private final BouncerDB DB;
-	private String prefix;
 
 	public MessageReceived(BouncerDB db){
 		DB = db;
@@ -22,108 +22,24 @@ public class MessageReceived extends ListenerAdapter{
 
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event){
-		Guild guild = event.getGuild();
-		prefix = DB.getCmdPrefix(guild.getIdLong());
+		String cmdPrefix = DB.getCmdPrefix(event.getGuild().getIdLong());
 		String[] args = event.getMessage().getContentRaw().split(" ");
-		if(args[0].equalsIgnoreCase(prefix + "autorole") && isAdmin(event))
-			autoRole(event, args);
-		if(args[0].equalsIgnoreCase(prefix + "help"))
-			help(event);
-		if(args[0].equalsIgnoreCase(prefix + "prefix") && isAdmin(event))
-			prefix(event, args);
-	}
+		try{
+			if(Character.toString(args[0].charAt(0)).equals(cmdPrefix)){ // TODO: 9/17/2020 Figure out why charAt is throwing an exception for !help, but the function still works...
+				String command = args[0].substring(1);
+				Map<String, Command> commandMap = new HashMap<>();
 
-	private boolean isAdmin(MessageReceivedEvent event){
-		boolean result = false;
-		if(event.getMember().hasPermission(Permission.ADMINISTRATOR))
-			result = true;
-		return result;
-	}
+				AutoRole autoRole = new AutoRole(DB);
+				commandMap.put(autoRole.getName(), autoRole);
+				Prefix prefix = new Prefix(DB);
+				commandMap.put(prefix.getName(), prefix);
+				Help help = new Help(DB);
+				commandMap.put(help.getName(), help);
 
-	private void autoRole(MessageReceivedEvent event, String[] args){
-		MessageChannel channel = event.getChannel();
-		long guildID = event.getGuild().getIdLong();
-		if(args.length == 1){
-			if(DB.getRoleID(guildID) != 0)
-				channel.sendMessage("Auto role is enabled!").queue();
-			else
-				channel.sendMessage("Auto role is disabled!").queue();
-		}
-		else if(args[1].equalsIgnoreCase("disable")){
-			DB.updateRoleID(guildID);
-			channel.sendMessage("Auto role is disabled!").queue();
-		}
-		else if(DB.getRoleID(guildID) != 0 && args[1].equalsIgnoreCase("update"))
-			updateMembers(event.getGuild());
-		else if(DB.getRoleID(guildID) == 0 && args.length == 2){
-			try{
-				Role role = event.getGuild().getRolesByName(args[1], true).get(0);
-				DB.updateRoleID(guildID, role.getIdLong());
-				channel.sendMessage(args[1] + " is now an auto role! **IMPORTANT:** Move the bouncer's role" +
-						" above the auto role or it wont be able to manage that role!").queue();
-			}catch(IndexOutOfBoundsException e){
-				createAutoRole(args[1], event);
+				if(commandMap.containsKey(command) &&
+						commandMap.get(command).canExecute(event.getMember()))
+					commandMap.get(command).execute(args, event);
 			}
-		}
-		else{
-			channel.sendMessage("Auto role is already enabled!").queue();
-		}
-	}
-
-	private void createAutoRole(String roleName, MessageReceivedEvent event){
-		Message message = new MessageBuilder().setContent("No pre-existing role found, do you wish to create a new role with permissions" +
-				" copied from @ everyone?").build();
-		event.getChannel().sendMessage(message).queue(msg -> {
-			msg.addReaction("\u2705").queue();
-			msg.addReaction("\u274E").queue();
-			MessageReactionAdd.setMsgId(msg.getIdLong());
-		});
-		MessageReactionAdd.setUserId(event.getMember().getIdLong());
-		MessageReactionAdd.setRoleName(roleName);
-	}
-
-	private void updateMembers(Guild guild){
-		for(Member member : guild.getMemberCache()) {
-			List<Role> memberRoles = member.getRoles();
-			if(!memberRoles.contains(guild.getRoleById(DB.getRoleID(guild.getIdLong())))){
-				Role autoRole = guild.getRoleById(DB.getRoleID(guild.getIdLong()));
-				assert autoRole != null;
-				guild.addRoleToMember(member, autoRole).queue();
-			}
-		}
-	}
-
-	private void prefix(MessageReceivedEvent event, String[] args){
-		MessageChannel channel = event.getChannel();
-		long guildID = event.getGuild().getIdLong();
-		if(args.length == 2 && args[1].length() == 1){
-			DB.updateCmdPrefix(guildID, args[1]);
-			channel.sendMessage("'" + DB.getCmdPrefix(guildID) + "' is the new command prefix!").queue();
-		}
-		else if(args.length == 1)
-			channel.sendMessage("'" + DB.getCmdPrefix(guildID) + "' is the command prefix!").queue();
-		else
-			channel.sendMessage("'" + args[1] + "' is an invalid prefix!").queue();
-	}
-
-	private void help(MessageReceivedEvent event){
-		MessageChannel channel = event.getChannel();
-		EmbedBuilder embedBuilder = new EmbedBuilder();
-		User milkomeda = event.getJDA().getUserById(151488174323924992L);
-
-		embedBuilder.setTitle("bouncer v1.0.8-beta");
-		embedBuilder.addField(
-				"Info",
-				"Bouncer is still under development, please contact the creator for issues or suggestions.\n" +
-						"Bouncer is a member management bot designed to assign default roles to new members. Commands" +
-						" with `this` appearance need administrator permissions to be used.", false);
-		embedBuilder.addField(
-				"Commands", String.format(
-						"`%sautorole` {role name} | 'disable' | 'update' - create or add existing role, turn off, add all existing members to role.\n" +
-								"`%sprefix` {char} - change the command prefix.\n" +
-								"%shelp", prefix, prefix, prefix), false);
-		assert milkomeda != null;
-		embedBuilder.setFooter("Created by " + milkomeda.getAsTag(), milkomeda.getAvatarUrl());
-		channel.sendMessage(embedBuilder.build()).queue();
+		}catch(StringIndexOutOfBoundsException ignored){}
 	}
 }
