@@ -6,16 +6,25 @@ import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Class listener for when a reaction is added.
+ */
 public class MessageReactionAdd extends ListenerAdapter{
 
     private static long msgId, userId;
     private static String roleName;
     private final BouncerDB DB;
 
+    /**
+     * @param db Database connection.
+     */
     public MessageReactionAdd(BouncerDB db) {
         DB = db;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onMessageReactionAdd(@NotNull MessageReactionAddEvent event){
         if(roleName != null && msgId == event.getMessageIdLong() && userId == event.getUserIdLong()){
@@ -38,14 +47,23 @@ public class MessageReactionAdd extends ListenerAdapter{
         }
     }
 
+    /**
+     * @param msgId Sets the message Id.
+     */
     public static void setMsgId(long msgId) {
         MessageReactionAdd.msgId = msgId;
     }
 
+    /**
+     * @param userId Sets the user Id.
+     */
     public static void setUserId(long userId) {
         MessageReactionAdd.userId = userId;
     }
 
+    /**
+     * @param roleName Sets the role name.
+     */
     public static void setRoleName(String roleName) {
         MessageReactionAdd.roleName = roleName;
     }
