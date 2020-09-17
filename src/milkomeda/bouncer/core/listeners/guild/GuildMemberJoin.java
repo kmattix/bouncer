@@ -8,14 +8,23 @@ import net.dv8tion.jda.api.exceptions.HierarchyException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Class listener for when a member joins the guild. Purpose is to update the role of a member.
+ */
 public class GuildMemberJoin extends ListenerAdapter{
 
 	private final BouncerDB DB;
 
+	/**
+	 * @param db Database connection.
+	 */
 	public GuildMemberJoin(BouncerDB db){
 		DB = db;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event){
 		Guild guild = event.getGuild();
