@@ -13,8 +13,17 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import javax.security.auth.login.LoginException;
 
+/**
+ * Entry class for JDA initialization.
+ */
 public class BouncerDrv{
 
+	/**
+	 * @param args Expecting a MySQL login info in order of IP, database, username, and password split by spaces.
+	 *
+	 * @throws LoginException
+	 * @throws InterruptedException
+	 */
 	public static void main(String[] args) throws LoginException, InterruptedException{
 		if(args.length < 4 || args.length > 5){
 			System.out.println("Incorrect arguments");
