@@ -49,7 +49,7 @@ public class BouncerDB{
 			statement.executeUpdate(String.format("INSERT INTO guild VALUES(%d,'%s',DEFAULT,DEFAULT,NOW());",
 					guildID, guildName));
 			statement.close();
-		} catch(SQLException e){
+		}catch(SQLException e){
 			e.printStackTrace();
 		}
 	}
@@ -62,7 +62,45 @@ public class BouncerDB{
 			Statement statement = connect.createStatement();
 			statement.executeUpdate("DELETE FROM guild WHERE guild_id = " + guildID + ";");
 			statement.close();
-		} catch(SQLException e){
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * There is no primary key used because the user can be banned from multiple guilds.
+	 * <p>For instance user A can be banned from guild A for 2 days and guild B for 5 days. This is to conserve the
+	 * ability for this bot to be used on multiple server.</p>
+	 *
+	 * @param userID IdLong for a user that is banned.
+	 * @param guildID IdLong that the user is banned on.
+	 * @param userTag The discord tag for a banned used (milkomeda#0099).
+	 * @param unbanDate Date when they are unbanned.
+	 */
+	public void addUserBan(long userID, long guildID, String userTag, Date unbanDate){
+		try{
+			Statement statement = connect.createStatement();
+			statement.executeUpdate(String.format(
+					"INSERT INTO user_bans VALUES(%d, %d, '%s', FROM_UNIXTIME(%d));",
+					userID, guildID, userTag, unbanDate.getTime() / 1000));
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * {@code userID} and {@code guildID} must match in the same query for the entry to be removed.
+	 *
+	 * @param userID IdLong for a user that is banned.
+	 * @param guildID IdLong for the guild that user's ban is being removed.
+	 */
+	public void removeUserBan(long userID, long guildID){
+		try{
+			Statement statement = connect.createStatement();
+			statement.executeUpdate(String.format("DELETE FROM user_bans WHERE user_id = %d AND guild_id = %d;",
+					userID, guildID));
+			statement.close();
+		}catch(SQLException e){
 			e.printStackTrace();
 		}
 	}
