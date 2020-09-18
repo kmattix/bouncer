@@ -32,7 +32,7 @@ public class GuildMemberJoin extends ListenerAdapter{
 			Role autoRole = event.getGuild().getRoleById(DB.getRoleID(guild.getIdLong()));
 			try{
 				event.getGuild().addRoleToMember(event.getMember(), autoRole).queue();
-			}catch(HierarchyException e){
+			}catch(HierarchyException e){ // TODO: 9/18/2020 why is this not catching sometimes
 				guild.getOwner().getUser().openPrivateChannel().flatMap(pChannel -> pChannel.sendMessage(
 						"Verify the bouncer role is above your '" + autoRole.getName() + "' auto role" +
 								" in " + DB.getGuildName(guild.getIdLong()) + ". " + event.getUser().getAsTag() + " was" +
