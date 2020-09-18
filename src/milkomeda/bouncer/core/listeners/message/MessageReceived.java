@@ -3,6 +3,7 @@ package milkomeda.bouncer.core.listeners.message;
 import milkomeda.bouncer.core.BouncerDB;
 import milkomeda.bouncer.core.Command;
 import milkomeda.bouncer.core.commands.AutoRole;
+import milkomeda.bouncer.core.commands.Ban;
 import milkomeda.bouncer.core.commands.Help;
 import milkomeda.bouncer.core.commands.Prefix;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -34,11 +35,13 @@ public class MessageReceived extends ListenerAdapter{
 		String[] args = event.getMessage().getContentRaw().split(" ");
 		try{
 			if(Character.toString(args[0].charAt(0)).equals(cmdPrefix)){ // TODO: 9/17/2020 Figure out why charAt is throwing an exception for !help, but the function still works...
-				String command = args[0].substring(1);
+				String command = args[0].substring(1).toLowerCase();
 				Map<String, Command> commandMap = new HashMap<>();
 
 				AutoRole autoRole = new AutoRole(DB);
 				commandMap.put(autoRole.getName(), autoRole);
+				Ban ban = new Ban(DB);
+				commandMap.put(ban.getName(), ban);
 				Prefix prefix = new Prefix(DB);
 				commandMap.put(prefix.getName(), prefix);
 				Help help = new Help(DB);
