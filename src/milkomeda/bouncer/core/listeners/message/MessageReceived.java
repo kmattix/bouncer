@@ -2,10 +2,7 @@ package milkomeda.bouncer.core.listeners.message;
 
 import milkomeda.bouncer.core.BouncerDB;
 import milkomeda.bouncer.core.Command;
-import milkomeda.bouncer.core.commands.AutoRole;
-import milkomeda.bouncer.core.commands.Ban;
-import milkomeda.bouncer.core.commands.Help;
-import milkomeda.bouncer.core.commands.Prefix;
+import milkomeda.bouncer.core.commands.*;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -42,6 +39,8 @@ public class MessageReceived extends ListenerAdapter{
 				commandMap.put(autoRole.getName(), autoRole);
 				Ban ban = new Ban(DB);
 				commandMap.put(ban.getName(), ban);
+				UnBan unBan = new UnBan(DB);
+				commandMap.put(unBan.getName(), unBan);
 				Prefix prefix = new Prefix(DB);
 				commandMap.put(prefix.getName(), prefix);
 				Help help = new Help(DB);
