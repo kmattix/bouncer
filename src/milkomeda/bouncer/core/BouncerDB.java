@@ -3,6 +3,7 @@ package milkomeda.bouncer.core;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import java.sql.*;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -105,9 +106,35 @@ public class BouncerDB{
 		}
 	}
 
-	// TODO: 9/18/2020 add logic to see if the userID is on a entry with the guildID
+
+	/**
+	 * This method checks if a user is banned on a given guild.
+	 * <p>The if a user has a ban entry, but the current date/time is past the ban date then the ban entry is removed
+	 * and this method returns false.</p>
+	 *
+	 * @param userID IdLong for the user that is being checked.
+	 * @param guildID IdLong for the guild that user is being checked on.
+	 *
+	 * @return      True if user is currently banned, false if user is not banned.
+	 */
 	public boolean isBanned(long userID, long guildID){
-		return false;
+		boolean result = false;
+		try{
+			Statement statement = connect.createStatement();
+			ResultSet resultSet = statement.executeQuery(
+					String.format("SELECT UNIX_TIMESTAMP(unban_date) FROM user_bans WHERE user_id = %d AND guild_id = %d;",
+							userID, guildID));
+			while(resultSet.next()){
+				long unbanTimeStamp = resultSet.getLong("UNIX_TIMESTAMP(unban_date)");
+				if(unbanTimeStamp <= Instant.now().getEpochSecond())
+					this.removeUserBan(userID, guildID);
+				else
+					result = true;
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 	/**
@@ -124,7 +151,7 @@ public class BouncerDB{
 		}
 		try{
 			Statement statement = connect.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT guild_id FROM guild");
+			ResultSet resultSet = statement.executeQuery("SELECT guild_id FROM guild;");
 			List<Long> dataGuildIds = new ArrayList<>();
 			while(resultSet.next()){
 				dataGuildIds.add(resultSet.getLong("guild_id"));
