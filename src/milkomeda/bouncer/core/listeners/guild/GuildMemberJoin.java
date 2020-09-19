@@ -27,12 +27,13 @@ public class GuildMemberJoin extends ListenerAdapter{
 	 */
 	@Override
 	public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event){
+		// TODO: 9/18/2020 check the ban list and kick the user if they are on there for events guild
 		Guild guild = event.getGuild();
 		if(DB.getRoleID(guild.getIdLong()) != 0){
 			Role autoRole = event.getGuild().getRoleById(DB.getRoleID(guild.getIdLong()));
 			try{
 				event.getGuild().addRoleToMember(event.getMember(), autoRole).queue();
-			}catch(HierarchyException e){ // TODO: 9/18/2020 why is this not catching sometimes
+			}catch(HierarchyException e){
 				guild.getOwner().getUser().openPrivateChannel().flatMap(pChannel -> pChannel.sendMessage(
 						"Verify the bouncer role is above your '" + autoRole.getName() + "' auto role" +
 								" in " + DB.getGuildName(guild.getIdLong()) + ". " + event.getUser().getAsTag() + " was" +

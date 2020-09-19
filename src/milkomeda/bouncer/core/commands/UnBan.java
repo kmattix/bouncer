@@ -48,6 +48,6 @@ public class UnBan extends Command{
 	public void execute(String[] args, MessageReceivedEvent event){
 		Guild guild = event.getGuild();
 		DB.removeUserBan(464870033055809537L, 750745545760309360L);
-
+		// TODO: 9/18/2020 add some logic here for handling the un ban
 	}
 }

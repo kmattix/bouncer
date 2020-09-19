@@ -105,6 +105,11 @@ public class BouncerDB{
 		}
 	}
 
+	// TODO: 9/18/2020 add logic to see if the userID is on a entry with the guildID
+	public boolean isBanned(long userID, long guildID){
+		return false;
+	}
+
 	/**
 	 * Checks the differences between the databases guilds and JDA guilds and adds or removes from the database if there
 	 * are any disparities.
