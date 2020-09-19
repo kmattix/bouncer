@@ -27,8 +27,11 @@ public class GuildMemberJoin extends ListenerAdapter{
 	 */
 	@Override
 	public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event){
-		// TODO: 9/18/2020 check the ban list and kick the user if they are on there for events guild
 		Guild guild = event.getGuild();
+		if(DB.isBanned(event.getUser().getIdLong(), guild.getIdLong())){
+			guild.kick(event.getMember()).queue();
+			return;
+		}
 		if(DB.getRoleID(guild.getIdLong()) != 0){
 			Role autoRole = event.getGuild().getRoleById(DB.getRoleID(guild.getIdLong()));
 			try{
