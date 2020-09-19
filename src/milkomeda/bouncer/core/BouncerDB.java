@@ -106,6 +106,22 @@ public class BouncerDB{
 		}
 	}
 
+	/**
+	 * {@code userTag} and {@code guildID} must match in the same query for the entry to be removed.
+	 *
+	 * @param userTag Discord tag for a user that is banned (milkomeda#0099).
+	 * @param guildID IdLong for the guild that user's ban is being removed.
+	 */
+	public void removeUserBan(String userTag, long guildID){
+		try{
+			Statement statement = connect.createStatement();
+			statement.executeUpdate(String.format("DELETE FROM user_bans WHERE user_tag = '%s' AND guild_id = %d;",
+					userTag, guildID));
+			statement.close();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * This method checks if a user is banned on a given guild.
@@ -128,6 +144,36 @@ public class BouncerDB{
 				long unbanTimeStamp = resultSet.getLong("UNIX_TIMESTAMP(unban_date)");
 				if(unbanTimeStamp <= Instant.now().getEpochSecond())
 					this.removeUserBan(userID, guildID);
+				else
+					result = true;
+			}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	/**
+	 * This method checks if a user is banned on a given guild.
+	 * <p>The if a user has a ban entry, but the current date/time is past the ban date then the ban entry is removed
+	 * and this method returns false.</p>
+	 *
+	 * @param userTag Discord tag for the user that is being checked (milkomeda#0099).
+	 * @param guildID IdLong for the guild that user is being checked on.
+	 *
+	 * @return      True if user is currently banned, false if user is not banned.
+	 */
+	public boolean isBanned(String userTag, long guildID){
+		boolean result = false;
+		try{
+			Statement statement = connect.createStatement();
+			ResultSet resultSet = statement.executeQuery(
+					String.format("SELECT UNIX_TIMESTAMP(unban_date) FROM user_bans WHERE user_tag = '%s' AND guild_id = %d;",
+							userTag, guildID));
+			while(resultSet.next()){
+				long unbanTimeStamp = resultSet.getLong("UNIX_TIMESTAMP(unban_date)");
+				if(unbanTimeStamp <= Instant.now().getEpochSecond())
+					this.removeUserBan(userTag, guildID);
 				else
 					result = true;
 			}
