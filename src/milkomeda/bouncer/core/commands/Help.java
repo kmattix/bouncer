@@ -14,7 +14,7 @@ public class Help extends Command{
 
 	private final BouncerDB DB;
 	private final String NAME = "help";
-	private final String VERSION = "bouncer v1.0.10-beta";
+	private final String VERSION = "bouncer v1.1.12-beta";
 
 	/**
 	 * @param db Database connection.
@@ -46,12 +46,14 @@ public class Help extends Command{
 				"Info",
 				"Bouncer is still under development, please contact the creator for issues or suggestions.\n" +
 						"Bouncer is a member management bot designed to assign default roles to new members. Commands" +
-						" with `this` appearance need administrator permissions to be used.", false);
+						" with `this` appearance needs permissions to be used.", false);
 		embedBuilder.addField(
 				"Commands", String.format(
 						"`%sautorole` {role name} | 'disable' | 'update' - create or add existing role, turn off, add all existing members to role.\n" +
 								"`%sprefix` {char} - change the command prefix.\n" +
-								"%shelp", prefix, prefix, prefix), false);
+								"`%sban` {@mention} {#days} - bans a user for set number of days, or indefinite if left empty.\n" +
+								"`%sunban` {tag} - removes a temp ban from a user. Tag is like user#1234.\n" +
+								"%shelp", prefix, prefix, prefix, prefix, prefix), false);
 		assert milkomeda != null;
 		embedBuilder.setFooter("Created by " + milkomeda.getAsTag(), milkomeda.getAvatarUrl());
 		channel.sendMessage(embedBuilder.build()).queue();
