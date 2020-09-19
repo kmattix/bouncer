@@ -47,7 +47,13 @@ public class UnBan extends Command{
 	@Override
 	public void execute(String[] args, MessageReceivedEvent event){
 		Guild guild = event.getGuild();
-		DB.removeUserBan(464870033055809537L, 750745545760309360L);
-		// TODO: 9/18/2020 add some logic here for handling the un ban
+		String tag = "";
+		for(int i = 1; i < args.length; i++){
+			tag += args[i];
+		}
+		if(DB.isBanned(tag, guild.getIdLong())){
+			DB.removeUserBan(tag, guild.getIdLong());
+			event.getMessage().getChannel().sendMessage(tag + "'s ban has been removed.").queue();
+		}
 	}
 }
