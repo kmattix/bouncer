@@ -55,5 +55,7 @@ public class UnBan extends Command{
 			DB.removeUserBan(tag, guild.getIdLong());
 			event.getMessage().getChannel().sendMessage(tag + "'s ban has been removed.").queue();
 		}
+		else
+			event.getMessage().getChannel().sendMessage("No bans have been removed.").queue();
 	}
 }
