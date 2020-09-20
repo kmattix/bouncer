@@ -28,7 +28,7 @@ public class GuildTable{
 	 * @param guildID IdLong for a guild given by a listener.
 	 * @param guildName The corresponding guild name.
 	 */
-	public void addGuild(long guildID, String guildName){
+	public void add(long guildID, String guildName){
 		try{
 			Statement statement = connect.createStatement();
 			statement.executeUpdate(String.format("INSERT INTO guild VALUES(%d,'%s',DEFAULT,DEFAULT,NOW());",
@@ -42,7 +42,7 @@ public class GuildTable{
 	/**
 	 * @param guildID IdLong for a guild that is to be deleted from the database.
 	 */
-	public void removeGuild(long guildID){
+	public void remove(long guildID){
 		try{
 			Statement statement = connect.createStatement();
 			statement.executeUpdate("DELETE FROM guild WHERE guild_id = " + guildID + ";");
@@ -58,7 +58,7 @@ public class GuildTable{
 	 *
 	 * @param jda The current JDA instance that contains the guilds being serviced.
 	 */
-	public void updateGuildEntries(JDA jda){
+	public void update(JDA jda){
 		List<Guild> actualGuilds = jda.getGuilds();
 		List<Long> actualGuildIds = new ArrayList<>();
 		for(Guild actualGuild : actualGuilds){
@@ -74,14 +74,14 @@ public class GuildTable{
 			int entriesRemoved = 0;
 			for(long dataIndex : dataGuildIds){
 				if(!actualGuildIds.contains(dataIndex)){
-					removeGuild(dataIndex);
+					remove(dataIndex);
 					entriesRemoved++;
 				}
 			}
 			int entriesAdded = 0;
 			for(long actualIndex : actualGuildIds){
 				if(!dataGuildIds.contains(actualIndex)){
-					addGuild(actualIndex, jda.getGuildById(actualIndex).getName());
+					add(actualIndex, jda.getGuildById(actualIndex).getName());
 					entriesAdded++;
 				}
 			}
@@ -154,28 +154,6 @@ public class GuildTable{
 			ResultSet resultSet = statement.executeQuery("SELECT role_id FROM guild WHERE guild_id =" + guildID + ";");
 			resultSet.next();
 			output = resultSet.getLong("role_id");
-			statement.close();
-			resultSet.close();
-		}catch(SQLException e){
-			e.printStackTrace();
-		}
-		return output;
-	}
-
-	/**
-	 * Does not return a timestamp if the Id is not in the data base.
-	 *
-	 * @param guildID IdLong to retrieve a timestamp for the last date modified.
-	 *
-	 * @return      Timestamp from the corresponding Id.
-	 */
-	public Date getDateModified(long guildID){
-		Date output = null;
-		try{
-			Statement statement = connect.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT date_modified FROM guild WHERE guild_id =" + guildID + ";");
-			resultSet.next();
-			output = resultSet.getDate("date_modified");
 			statement.close();
 			resultSet.close();
 		}catch(SQLException e){

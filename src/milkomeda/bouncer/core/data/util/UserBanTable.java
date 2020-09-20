@@ -31,7 +31,7 @@ public class UserBanTable{
 	 * @param userTag The discord tag for a banned used (milkomeda#0099).
 	 * @param unbanDate Date when they are unbanned.
 	 */
-	public void addUserBan(long userID, long guildID, String userTag, Date unbanDate){
+	public void add(long userID, long guildID, String userTag, Date unbanDate){
 		try{
 			Statement statement = connect.createStatement();
 			statement.executeUpdate(String.format(
@@ -48,7 +48,7 @@ public class UserBanTable{
 	 * @param userID IdLong for a user that is banned.
 	 * @param guildID IdLong for the guild that user's ban is being removed.
 	 */
-	public void removeUserBan(long userID, long guildID){
+	public void remove(long userID, long guildID){
 		try{
 			Statement statement = connect.createStatement();
 			statement.executeUpdate(String.format("DELETE FROM user_ban WHERE user_id = %d AND guild_id = %d;",
@@ -65,7 +65,7 @@ public class UserBanTable{
 	 * @param userTag Discord tag for a user that is banned (milkomeda#0099).
 	 * @param guildID IdLong for the guild that user's ban is being removed.
 	 */
-	public void removeUserBan(String userTag, long guildID){
+	public void remove(String userTag, long guildID){
 		try{
 			Statement statement = connect.createStatement();
 			statement.executeUpdate(String.format("DELETE FROM user_ban WHERE user_tag = '%s' AND guild_id = %d;",
@@ -96,7 +96,7 @@ public class UserBanTable{
 			while(resultSet.next()){
 				long unbanTimeStamp = resultSet.getLong("UNIX_TIMESTAMP(unban_date)");
 				if(unbanTimeStamp <= Instant.now().getEpochSecond())
-					this.removeUserBan(userID, guildID);
+					this.remove(userID, guildID);
 				else
 					result = true;
 			}
@@ -126,7 +126,7 @@ public class UserBanTable{
 			while(resultSet.next()){
 				long unbanTimeStamp = resultSet.getLong("UNIX_TIMESTAMP(unban_date)");
 				if(unbanTimeStamp <= Instant.now().getEpochSecond())
-					this.removeUserBan(userTag, guildID);
+					this.remove(userTag, guildID);
 				else
 					result = true;
 			}

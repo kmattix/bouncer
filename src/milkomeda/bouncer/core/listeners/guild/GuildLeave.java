@@ -27,7 +27,7 @@ public class GuildLeave extends ListenerAdapter{
 	@Override
 	public void onGuildLeave(@NotNull GuildLeaveEvent event){
 		Guild guild = event.getGuild();
-		GT.removeGuild(guild.getIdLong());
+		GT.remove(guild.getIdLong());
 		System.out.println("Left server " + guild.getName() + " (ID " + guild.getIdLong() + ").");
 	}
 }

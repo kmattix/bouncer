@@ -25,7 +25,7 @@ public class GuildJoin extends ListenerAdapter{
 	@Override
 	public void onGuildJoin(@NotNull net.dv8tion.jda.api.events.guild.GuildJoinEvent event){
 		Guild guild = event.getGuild();
-		GT.addGuild(guild.getIdLong(), guild.getName());
+		GT.add(guild.getIdLong(), guild.getName());
 		System.out.println("Joined server " +  guild.getName() + " (ID " + guild.getIdLong() + ").");
 	}
 }

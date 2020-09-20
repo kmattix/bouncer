@@ -48,7 +48,7 @@ public class BouncerDrv{
 		jda.awaitReady();
 
 		if(dc.testConnection()) {
-			gt.updateGuildEntries(jda);
+			gt.update(jda);
 			System.out.println("Database connected successfully...");
 		}
 		else{
