@@ -1,7 +1,6 @@
 package milkomeda.bouncer.core.commands;
 
 import milkomeda.bouncer.core.BouncerDB;
-import milkomeda.bouncer.core.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;

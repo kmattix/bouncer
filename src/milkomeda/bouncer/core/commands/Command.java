@@ -1,4 +1,4 @@
-package milkomeda.bouncer.core;
+package milkomeda.bouncer.core.commands;
 
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;

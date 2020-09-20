@@ -1,7 +1,6 @@
 package milkomeda.bouncer.core.commands;
 
 import milkomeda.bouncer.core.BouncerDB;
-import milkomeda.bouncer.core.Command;
 import milkomeda.bouncer.core.listeners.message.MessageReactionAdd;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
