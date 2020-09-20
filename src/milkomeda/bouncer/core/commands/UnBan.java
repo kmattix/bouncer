@@ -1,6 +1,7 @@
 package milkomeda.bouncer.core.commands;
 
-import milkomeda.bouncer.core.BouncerDB;
+import milkomeda.bouncer.core.data.DatabaseConnection;
+import milkomeda.bouncer.core.data.util.UserBanTable;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -12,13 +13,13 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 public class UnBan extends Command{
 
 	final private String NAME = "unban";
-	final private BouncerDB DB;
+	final private UserBanTable UBT;
 
 	/**
-	 * @param db Database connection.
+	 * @param ubt User ban table utility.
 	 */
-	public UnBan(BouncerDB db){
-		DB = db;
+	public UnBan(UserBanTable ubt){
+		UBT = ubt;
 	}
 
 	/**
@@ -50,8 +51,8 @@ public class UnBan extends Command{
 		for(int i = 1; i < args.length; i++){
 			tag += args[i];
 		}
-		if(DB.isBanned(tag, guild.getIdLong())){
-			DB.removeUserBan(tag, guild.getIdLong());
+		if(UBT.isBanned(tag, guild.getIdLong())){
+			UBT.removeUserBan(tag, guild.getIdLong());
 			event.getMessage().getChannel().sendMessage(tag + "'s ban has been removed.").queue();
 		}
 		else

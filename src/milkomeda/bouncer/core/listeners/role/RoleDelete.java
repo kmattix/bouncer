@@ -1,6 +1,6 @@
 package milkomeda.bouncer.core.listeners.role;
 
-import milkomeda.bouncer.core.BouncerDB;
+import milkomeda.bouncer.core.data.util.GuildTable;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.role.RoleDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -11,13 +11,13 @@ import org.jetbrains.annotations.NotNull;
  */
 public class RoleDelete extends ListenerAdapter{
 
-    private final BouncerDB DB;
+    private final GuildTable GT;
 
     /**
-     * @param db Database connection.
+     * @param gt Guild table utility.
      */
-    public RoleDelete(BouncerDB db) {
-        DB = db;
+    public RoleDelete(GuildTable gt) {
+        GT = gt;
     }
 
     /**
@@ -26,7 +26,7 @@ public class RoleDelete extends ListenerAdapter{
     @Override
     public void onRoleDelete(@NotNull RoleDeleteEvent event) {
         Guild guild = event.getGuild();
-        if(event.getRole().getIdLong() == DB.getRoleID(guild.getIdLong()))
-            DB.updateRoleID(guild.getIdLong());
+        if(event.getRole().getIdLong() == GT.getRoleID(guild.getIdLong()))
+            GT.updateRoleID(guild.getIdLong());
     }
 }

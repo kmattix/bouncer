@@ -1,6 +1,6 @@
 package milkomeda.bouncer.core.commands;
 
-import milkomeda.bouncer.core.BouncerDB;
+import milkomeda.bouncer.core.data.util.GuildTable;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.User;
@@ -11,15 +11,15 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  */
 public class Help extends Command{
 
-	private final BouncerDB DB;
+	private final GuildTable GT;
 	private final String NAME = "help";
-	private final String VERSION = "bouncer v1.1.12-beta";
+	private final String VERSION = "bouncer v1.1.13-beta";
 
 	/**
-	 * @param db Database connection.
+	 * @param gt Guild table utility.
 	 */
-	public Help(BouncerDB db){
-		DB = db;
+	public Help(GuildTable gt){
+		GT = gt;
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class Help extends Command{
 		MessageChannel channel = event.getChannel();
 		EmbedBuilder embedBuilder = new EmbedBuilder();
 		User milkomeda = event.getJDA().getUserById(151488174323924992L);
-		String prefix = DB.getCmdPrefix(event.getGuild().getIdLong());
+		String prefix = GT.getCmdPrefix(event.getGuild().getIdLong());
 
 		embedBuilder.setTitle(VERSION);
 		embedBuilder.addField(

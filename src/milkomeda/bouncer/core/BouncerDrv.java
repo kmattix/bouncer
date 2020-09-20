@@ -1,5 +1,8 @@
 package milkomeda.bouncer.core;
 
+import milkomeda.bouncer.core.data.DatabaseConnection;
+import milkomeda.bouncer.core.data.util.GuildTable;
+import milkomeda.bouncer.core.data.util.UserBanTable;
 import milkomeda.bouncer.core.listeners.guild.GuildJoin;
 import milkomeda.bouncer.core.listeners.guild.GuildLeave;
 import milkomeda.bouncer.core.listeners.guild.GuildMemberJoin;
@@ -30,19 +33,22 @@ public class BouncerDrv{
 			System.exit(1);
 		}
 
-		BouncerDB db;
-		if(args.length == 5) db = new BouncerDB(args[1], args[2], args[3], args[4]);
-		else db = new BouncerDB(args[1], args[2], args[3]);
+		DatabaseConnection dc;
+		if(args.length == 5) dc = new DatabaseConnection(args[1], args[2], args[3], args[4]);
+		else dc = new DatabaseConnection(args[1], args[2], args[3]);
+
+		GuildTable gt = new GuildTable(dc);
+		UserBanTable ubt = new UserBanTable(dc);
 
 		JDA jda = JDABuilder.create(args[0], GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS)
-				.addEventListeners(new GuildJoin(db), new GuildLeave(db), new GuildUpdateName(db), new RoleDelete(db))
-				.addEventListeners(new GuildMemberJoin(db), new MessageReceived(db), new MessageReactionAdd(db))
+				.addEventListeners(new GuildJoin(gt), new GuildLeave(gt), new GuildUpdateName(gt), new RoleDelete(gt))
+				.addEventListeners(new GuildMemberJoin(gt, ubt), new MessageReceived(gt, ubt), new MessageReactionAdd(gt))
 				.setActivity(Activity.watching("new members | !help"))
 				.build();
 		jda.awaitReady();
 
-		if(db.testConnection()) {
-			db.updateGuildEntries(jda);
+		if(dc.testConnection()) {
+			gt.updateGuildEntries(jda);
 			System.out.println("Database connected successfully...");
 		}
 		else{

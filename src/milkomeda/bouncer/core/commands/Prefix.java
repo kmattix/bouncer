@@ -1,6 +1,7 @@
 package milkomeda.bouncer.core.commands;
 
-import milkomeda.bouncer.core.BouncerDB;
+import milkomeda.bouncer.core.data.DatabaseConnection;
+import milkomeda.bouncer.core.data.util.GuildTable;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageChannel;
@@ -11,11 +12,11 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
  */
 public class Prefix extends Command{
 
-	private final BouncerDB DB;
+	private final GuildTable GT;
 	private final String NAME = "prefix";
 
-	public Prefix(BouncerDB db){
-		DB = db;
+	public Prefix(GuildTable gt){
+		GT = gt;
 	}
 
 	/**
@@ -45,11 +46,11 @@ public class Prefix extends Command{
 		MessageChannel channel = event.getChannel();
 		long guildID = event.getGuild().getIdLong();
 		if(args.length == 2 && args[1].length() == 1){
-			DB.updateCmdPrefix(guildID, args[1]);
-			channel.sendMessage("'" + DB.getCmdPrefix(guildID) + "' is the new command prefix!").queue();
+			GT.updateCmdPrefix(guildID, args[1]);
+			channel.sendMessage("'" + GT.getCmdPrefix(guildID) + "' is the new command prefix!").queue();
 		}
 		else if(args.length == 1)
-			channel.sendMessage("'" + DB.getCmdPrefix(guildID) + "' is the command prefix!").queue();
+			channel.sendMessage("'" + GT.getCmdPrefix(guildID) + "' is the command prefix!").queue();
 		else
 			channel.sendMessage("'" + args[1] + "' is an invalid prefix!").queue();
 	}

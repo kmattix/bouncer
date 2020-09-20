@@ -1,6 +1,6 @@
 package milkomeda.bouncer.core.listeners.message;
 
-import milkomeda.bouncer.core.BouncerDB;
+import milkomeda.bouncer.core.data.util.GuildTable;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.react.MessageReactionAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -13,13 +13,13 @@ public class MessageReactionAdd extends ListenerAdapter{
 
     private static long msgId, userId;
     private static String roleName;
-    private final BouncerDB DB;
+    private final GuildTable GT;
 
     /**
-     * @param db Database connection.
+     * @param gt Guild table utility.
      */
-    public MessageReactionAdd(BouncerDB db) {
-        DB = db;
+    public MessageReactionAdd(GuildTable gt) {
+        GT = gt;
     }
 
     /**
@@ -31,7 +31,7 @@ public class MessageReactionAdd extends ListenerAdapter{
             if(event.getReactionEmote().getName().equals("\u2705")){
                 Role newAutorole = event.getGuild().getPublicRole();
                 newAutorole.createCopy().setName(roleName).queue(role ->{
-                    DB.updateRoleID(event.getGuild().getIdLong(), role.getIdLong());
+                    GT.updateRoleID(event.getGuild().getIdLong(), role.getIdLong());
                 });
                 event.getTextChannel().sendMessage(roleName + " is now an auto role!").queue();
                 setMsgId(0);

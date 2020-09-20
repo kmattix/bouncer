@@ -1,6 +1,7 @@
 package milkomeda.bouncer.core.commands;
 
-import milkomeda.bouncer.core.BouncerDB;
+import milkomeda.bouncer.core.data.DatabaseConnection;
+import milkomeda.bouncer.core.data.util.GuildTable;
 import milkomeda.bouncer.core.listeners.message.MessageReactionAdd;
 import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
@@ -13,14 +14,14 @@ import java.util.List;
  */
 public class AutoRole extends Command{
 
-	final private BouncerDB DB;
+	final private GuildTable GT;
 	final private String NAME = "autorole";
 
 	/**
-	 * @param db Database connection.
+	 * @param gt Database connection.
 	 */
-	public AutoRole(BouncerDB db){
-		DB = db;
+	public AutoRole(GuildTable gt){
+		GT = gt;
 	}
 
 	/**
@@ -50,21 +51,21 @@ public class AutoRole extends Command{
 		MessageChannel channel = event.getChannel();
 		long guildID = event.getGuild().getIdLong();
 		if(args.length == 1){
-			if(DB.getRoleID(guildID) != 0)
+			if(GT.getRoleID(guildID) != 0)
 				channel.sendMessage("Auto role is enabled!").queue();
 			else
 				channel.sendMessage("Auto role is disabled!").queue();
 		}
 		else if(args[1].equalsIgnoreCase("disable")){
-			DB.updateRoleID(guildID);
+			GT.updateRoleID(guildID);
 			channel.sendMessage("Auto role is disabled!").queue();
 		}
-		else if(DB.getRoleID(guildID) != 0 && args[1].equalsIgnoreCase("update"))
+		else if(GT.getRoleID(guildID) != 0 && args[1].equalsIgnoreCase("update"))
 			updateMembers(event.getGuild());
-		else if(DB.getRoleID(guildID) == 0 && args.length == 2){
+		else if(GT.getRoleID(guildID) == 0 && args.length == 2){
 			try{
 				Role role = event.getGuild().getRolesByName(args[1], true).get(0);
-				DB.updateRoleID(guildID, role.getIdLong());
+				GT.updateRoleID(guildID, role.getIdLong());
 				channel.sendMessage(args[1] + " is now an auto role! **IMPORTANT:** Move the bouncer's role" +
 						" above the auto role or it wont be able to manage that role!").queue();
 			}catch(IndexOutOfBoundsException e){
@@ -103,8 +104,8 @@ public class AutoRole extends Command{
 	private void updateMembers(Guild guild){
 		for(Member member : guild.getMemberCache()) {
 			List<Role> memberRoles = member.getRoles();
-			if(!memberRoles.contains(guild.getRoleById(DB.getRoleID(guild.getIdLong())))){
-				Role autoRole = guild.getRoleById(DB.getRoleID(guild.getIdLong()));
+			if(!memberRoles.contains(guild.getRoleById(GT.getRoleID(guild.getIdLong())))){
+				Role autoRole = guild.getRoleById(GT.getRoleID(guild.getIdLong()));
 				assert autoRole != null;
 				guild.addRoleToMember(member, autoRole).queue();
 			}

@@ -1,6 +1,7 @@
 package milkomeda.bouncer.core.commands;
 
-import milkomeda.bouncer.core.BouncerDB;
+import milkomeda.bouncer.core.data.DatabaseConnection;
+import milkomeda.bouncer.core.data.util.UserBanTable;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -14,14 +15,14 @@ import java.util.Date;
  */
 public class Ban extends Command{
 
-	final private BouncerDB DB;
+	final private UserBanTable UBT;
 	final private String NAME = "ban";
 
 	/**
-	 * @param db Database connection.
+	 * @param ubt User ban table utility.
 	 */
-	public Ban(BouncerDB db){
-		DB = db;
+	public Ban(UserBanTable ubt){
+		UBT = ubt;
 	}
 
 	/**
@@ -57,7 +58,7 @@ public class Ban extends Command{
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(new Date());
 				calendar.add(Calendar.DATE, Integer.parseInt(args[2]));
-				DB.addUserBan(member.getIdLong(), guild.getIdLong(), member.getUser().getAsTag(), calendar.getTime());
+				UBT.addUserBan(member.getIdLong(), guild.getIdLong(), member.getUser().getAsTag(), calendar.getTime());
 				guild.kick(member).queue();
 			}
 		} catch(IndexOutOfBoundsException | NumberFormatException e){

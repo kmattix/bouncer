@@ -1,6 +1,6 @@
 package milkomeda.bouncer.core.listeners.guild;
 
-import milkomeda.bouncer.core.BouncerDB;
+import milkomeda.bouncer.core.data.util.GuildTable;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.events.guild.update.GuildUpdateNameEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -12,13 +12,13 @@ import org.jetbrains.annotations.NotNull;
  */
 public class GuildUpdateName extends ListenerAdapter{
 
-	private final BouncerDB DB;
+	private final GuildTable GT;
 
 	/**
-	 * @param db Database connection.
+	 * @param gt Database connection.
 	 */
-	public GuildUpdateName(BouncerDB db){
-		DB = db;
+	public GuildUpdateName(GuildTable gt){
+		GT = gt;
 	}
 
 	/**
@@ -27,6 +27,6 @@ public class GuildUpdateName extends ListenerAdapter{
 	@Override
 	public void onGuildUpdateName(@NotNull GuildUpdateNameEvent event){
 		Guild guild = event.getGuild();
-		DB.updateGuildName(guild.getIdLong(), event.getNewName());
+		GT.updateGuildName(guild.getIdLong(), event.getNewName());
 	}
 }

@@ -1,8 +1,9 @@
 package milkomeda.bouncer.core.listeners.message;
 
-import milkomeda.bouncer.core.BouncerDB;
 import milkomeda.bouncer.core.commands.Command;
 import milkomeda.bouncer.core.commands.*;
+import milkomeda.bouncer.core.data.util.GuildTable;
+import milkomeda.bouncer.core.data.util.UserBanTable;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -14,13 +15,15 @@ import java.util.Map;
  */
 public class MessageReceived extends ListenerAdapter{
 
-	private final BouncerDB DB;
+	private final GuildTable GT;
+	private final UserBanTable UBT;
 
 	/**
-	 * @param db Database connection.
+	 * @param gt Guild table utility.
 	 */
-	public MessageReceived(BouncerDB db){
-		DB = db;
+	public MessageReceived(GuildTable gt, UserBanTable ubt){
+		GT = gt;
+		UBT = ubt;
 	}
 
 	/**
@@ -28,22 +31,22 @@ public class MessageReceived extends ListenerAdapter{
 	 */
 	@Override
 	public void onMessageReceived(@NotNull MessageReceivedEvent event){
-		String cmdPrefix = DB.getCmdPrefix(event.getGuild().getIdLong());
+		String cmdPrefix = GT.getCmdPrefix(event.getGuild().getIdLong());
 		String[] args = event.getMessage().getContentRaw().split(" ");
 		try{
 			if(Character.toString(args[0].charAt(0)).equals(cmdPrefix)){ // TODO: 9/17/2020 Figure out why charAt is throwing an exception for !help, but the function still works...
 				String command = args[0].substring(1).toLowerCase();
 				Map<String, Command> commandMap = new HashMap<>();
 
-				AutoRole autoRole = new AutoRole(DB);
+				AutoRole autoRole = new AutoRole(GT);
 				commandMap.put(autoRole.getName(), autoRole);
-				Ban ban = new Ban(DB);
+				Ban ban = new Ban(UBT);
 				commandMap.put(ban.getName(), ban);
-				UnBan unBan = new UnBan(DB);
+				UnBan unBan = new UnBan(UBT);
 				commandMap.put(unBan.getName(), unBan);
-				Prefix prefix = new Prefix(DB);
+				Prefix prefix = new Prefix(GT);
 				commandMap.put(prefix.getName(), prefix);
-				Help help = new Help(DB);
+				Help help = new Help(GT);
 				commandMap.put(help.getName(), help);
 
 				if(commandMap.containsKey(command) &&
