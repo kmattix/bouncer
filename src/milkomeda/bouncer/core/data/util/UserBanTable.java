@@ -8,6 +8,9 @@ import java.sql.Statement;
 import java.time.Instant;
 import java.util.Date;
 
+/**
+ * Utility class for the user_ban table.
+ */
 public class UserBanTable{
 
 	private final DatabaseConnection DC;

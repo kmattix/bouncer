@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Utility class for the guilds table.
+ */
 public class GuildTable{
 
 	private final DatabaseConnection DC;
