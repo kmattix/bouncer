@@ -1,6 +1,5 @@
 package milkomeda.bouncer.core.commands;
 
-import milkomeda.bouncer.core.data.DatabaseConnection;
 import milkomeda.bouncer.core.data.util.GuildTable;
 import milkomeda.bouncer.core.listeners.message.MessageReactionAdd;
 import net.dv8tion.jda.api.MessageBuilder;

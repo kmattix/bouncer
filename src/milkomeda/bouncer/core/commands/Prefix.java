@@ -1,6 +1,5 @@
 package milkomeda.bouncer.core.commands;
 
-import milkomeda.bouncer.core.data.DatabaseConnection;
 import milkomeda.bouncer.core.data.util.GuildTable;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
@@ -15,6 +14,9 @@ public class Prefix extends Command{
 	private final GuildTable GT;
 	private final String NAME = "prefix";
 
+	/**
+	 * @param gt Guild table utility.
+	 */
 	public Prefix(GuildTable gt){
 		GT = gt;
 	}
