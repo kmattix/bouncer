@@ -10,7 +10,7 @@ import java.sql.SQLException;
 public class DatabaseConnection{
 
 	private final String IP, DATABASE, USERNAME, PASSWORD;
-	public Connection connect;
+	private Connection connection;
 	
 	/**
 	 * Use when connecting to an external IP.
@@ -28,12 +28,20 @@ public class DatabaseConnection{
 		readDataBase();
 	}
 
-	public DatabaseConnection(String database, String username, String password) {    // TODO: 9/6/2020 figure out why this doesn't work
+	// TODO: 9/6/2020 figure out why this doesn't work
+	public DatabaseConnection(String database, String username, String password){
 		IP = "localhost";
 		DATABASE = database;
 		USERNAME = username;
 		PASSWORD = password;
 		readDataBase();
+	}
+
+	/**
+	 * @return The data base connection.
+	 */
+	public Connection getConnection(){
+		return connection;
 	}
 
 	/**
@@ -44,9 +52,9 @@ public class DatabaseConnection{
 	public boolean testConnection(){
 		boolean status;
 		try{
-			connect.createStatement();
+			connection.createStatement();
 			status = true;
-		} catch(NullPointerException | SQLException e){
+		}catch(NullPointerException | SQLException e){
 			status = false;
 		}
 		return status;
@@ -55,9 +63,9 @@ public class DatabaseConnection{
 	/**
 	 * Uses the JDBC driver to connect to the data base.
 	 */
-	private void readDataBase() {
+	private void readDataBase(){
 		try{
-			connect = DriverManager.getConnection("jdbc:mysql://" + IP + "/" + DATABASE + "?user=" + USERNAME + "&password=" + PASSWORD);
+			connection = DriverManager.getConnection("jdbc:mysql://" + IP + "/" + DATABASE + "?user=" + USERNAME + "&password=" + PASSWORD);
 		}catch(SQLException e){
 			System.out.println("Wrong database information...");
 		}

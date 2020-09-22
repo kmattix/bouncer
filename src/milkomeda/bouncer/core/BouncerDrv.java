@@ -40,9 +40,12 @@ public class BouncerDrv{
 		GuildTable gt = new GuildTable(dc);
 		UserBanTable ubt = new UserBanTable(dc);
 
-		JDA jda = JDABuilder.create(args[0], GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS)
+		JDA jda = JDABuilder
+				.create(args[0], GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MESSAGES,
+						GatewayIntent.GUILD_MESSAGE_REACTIONS)
 				.addEventListeners(new GuildJoin(gt), new GuildLeave(gt), new GuildUpdateName(gt), new RoleDelete(gt))
-				.addEventListeners(new GuildMemberJoin(gt, ubt), new MessageReceived(gt, ubt), new MessageReactionAdd(gt))
+				.addEventListeners(new GuildMemberJoin(gt, ubt), new MessageReceived(gt, ubt))
+				.addEventListeners(new MessageReactionAdd(gt))
 				.setActivity(Activity.watching("new members | !help"))
 				.build();
 		jda.awaitReady();

@@ -38,12 +38,14 @@ public class GuildMemberJoin extends ListenerAdapter{
 		if(GT.getRoleID(guild.getIdLong()) != 0){
 			Role autoRole = event.getGuild().getRoleById(GT.getRoleID(guild.getIdLong()));
 			try{
+				assert autoRole != null;
 				event.getGuild().addRoleToMember(event.getMember(), autoRole).queue();
 			}catch(HierarchyException e){
 				guild.getOwner().getUser().openPrivateChannel().flatMap(pChannel -> pChannel.sendMessage(
-						"Verify the bouncer role is above your '" + autoRole.getName() + "' auto role" +
-								" in " + GT.getGuildName(guild.getIdLong()) + ". " + event.getUser().getAsTag() + " was" +
-								" not added to the auto role.")).queue();
+						String.format("Verify the bouncer role is above your '%s' auto role in %s. " +
+								"%s was not added to the auto role.",
+								autoRole.getName(), GT.getGuildName(guild.getIdLong()), event.getUser().getAsTag())))
+						.queue();
 			}
 		}
 	}

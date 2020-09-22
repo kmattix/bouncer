@@ -34,7 +34,8 @@ public class MessageReceived extends ListenerAdapter{
 		String cmdPrefix = GT.getCmdPrefix(event.getGuild().getIdLong());
 		String[] args = event.getMessage().getContentRaw().split(" ");
 		try{
-			if(Character.toString(args[0].charAt(0)).equals(cmdPrefix)){ // TODO: 9/17/2020 Figure out why charAt is throwing an exception for !help, but the function still works...
+			// TODO: 9/17/2020 Figure out why charAt is throwing an exception for !help, but the function still works...
+			if(Character.toString(args[0].charAt(0)).equals(cmdPrefix)){
 				String command = args[0].substring(1).toLowerCase();
 				Map<String, Command> commandMap = new HashMap<>();
 

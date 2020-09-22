@@ -13,12 +13,10 @@ import java.util.Date;
  */
 public class UserBanTable{
 
-	private final DatabaseConnection DC;
-	private Connection connect;
+	private final Connection CONNECT;
 
 	public UserBanTable(DatabaseConnection dc){
-		DC = dc;
-		connect = DC.connect;
+		CONNECT = dc.getConnection();
 	}
 
 	/**
@@ -33,7 +31,7 @@ public class UserBanTable{
 	 */
 	public void add(long userID, long guildID, String userTag, Date unbanDate){
 		try{
-			Statement statement = connect.createStatement();
+			Statement statement = CONNECT.createStatement();
 			statement.executeUpdate(String.format(
 					"INSERT INTO user_ban VALUES(%d, %d, '%s', FROM_UNIXTIME(%d));",
 					userID, guildID, userTag, unbanDate.getTime() / 1000));
@@ -50,7 +48,7 @@ public class UserBanTable{
 	 */
 	public void remove(long userID, long guildID){
 		try{
-			Statement statement = connect.createStatement();
+			Statement statement = CONNECT.createStatement();
 			statement.executeUpdate(String.format("DELETE FROM user_ban WHERE user_id = %d AND guild_id = %d;",
 					userID, guildID));
 			statement.close();
@@ -67,7 +65,7 @@ public class UserBanTable{
 	 */
 	public void remove(String userTag, long guildID){
 		try{
-			Statement statement = connect.createStatement();
+			Statement statement = CONNECT.createStatement();
 			statement.executeUpdate(String.format("DELETE FROM user_ban WHERE user_tag = '%s' AND guild_id = %d;",
 					userTag, guildID));
 			statement.close();
@@ -89,9 +87,9 @@ public class UserBanTable{
 	public boolean isBanned(long userID, long guildID){
 		boolean result = false;
 		try{
-			Statement statement = connect.createStatement();
-			ResultSet resultSet = statement.executeQuery(
-					String.format("SELECT UNIX_TIMESTAMP(unban_date) FROM user_ban WHERE user_id = %d AND guild_id = %d;",
+			Statement statement = CONNECT.createStatement();
+			ResultSet resultSet = statement.executeQuery(String
+					.format("SELECT UNIX_TIMESTAMP(unban_date) FROM user_ban WHERE user_id = %d AND guild_id = %d;",
 							userID, guildID));
 			while(resultSet.next()){
 				long unbanTimeStamp = resultSet.getLong("UNIX_TIMESTAMP(unban_date)");
@@ -119,9 +117,9 @@ public class UserBanTable{
 	public boolean isBanned(String userTag, long guildID){
 		boolean result = false;
 		try{
-			Statement statement = connect.createStatement();
-			ResultSet resultSet = statement.executeQuery(
-					String.format("SELECT UNIX_TIMESTAMP(unban_date) FROM user_ban WHERE user_tag = '%s' AND guild_id = %d;",
+			Statement statement = CONNECT.createStatement();
+			ResultSet resultSet = statement.executeQuery(String
+					.format("SELECT UNIX_TIMESTAMP(unban_date) FROM user_ban WHERE user_tag = '%s' AND guild_id = %d;",
 							userTag, guildID));
 			while(resultSet.next()){
 				long unbanTimeStamp = resultSet.getLong("UNIX_TIMESTAMP(unban_date)");
