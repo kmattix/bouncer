@@ -1,5 +1,6 @@
 package milkomeda.bouncer.core.data;
 
+import java.net.PasswordAuthentication;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -65,7 +66,8 @@ public class DatabaseConnection{
 	 */
 	private void readDataBase(){
 		try{
-			connection = DriverManager.getConnection("jdbc:mysql://" + IP + "/" + DATABASE + "?user=" + USERNAME + "&password=" + PASSWORD);
+			connection = DriverManager.getConnection(String.format("jdbc:mysql://%s/%s?autoReconnect=true",
+					IP, DATABASE), USERNAME, PASSWORD);
 		}catch(SQLException e){
 			System.out.println("Wrong database information...");
 		}
