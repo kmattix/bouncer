@@ -5,6 +5,9 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 /**
  * Abstract {@code Command} super class used as a template for child commands.
+ *
+ * @author Kevin Mattix
+ * @date 11-10-2020
  */
 public abstract class Command{
 

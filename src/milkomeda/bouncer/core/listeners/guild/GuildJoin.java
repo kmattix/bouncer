@@ -7,6 +7,9 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Class listener for when a guild is added to the JDA. Purpose is to initialize it to the database.
+ *
+ * @author Kevin Mattix
+ * @date 11-10-2020
  */
 public class GuildJoin extends ListenerAdapter{
 

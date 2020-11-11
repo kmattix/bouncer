@@ -9,6 +9,9 @@ import org.jetbrains.annotations.NotNull;
 /**
  * Class listener for when a guild leaves the JDA. Purpose is to remove the guild from the database to save database
  * resources.
+ *
+ * @author Kevin Mattix
+ * @date 11-10-2020
  */
 public class GuildLeave extends ListenerAdapter{
 

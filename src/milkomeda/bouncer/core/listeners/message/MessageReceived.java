@@ -12,6 +12,9 @@ import java.util.Map;
 
 /**
  * Class listener for when the JDA retrieves a message.
+ *
+ * @author Kevin Mattix
+ * @date 11-10-2020
  */
 public class MessageReceived extends ListenerAdapter{
 

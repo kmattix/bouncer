@@ -10,6 +10,9 @@ import java.util.Date;
 
 /**
  * Sub class of {@code Command} that is used for the timed ban functionality.
+ *
+ * @author Kevin Mattix
+ * @date 11-10-2020
  */
 public class Ban extends Command{
 

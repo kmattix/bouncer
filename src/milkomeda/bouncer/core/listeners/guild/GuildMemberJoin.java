@@ -11,6 +11,9 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Class listener for when a member joins the guild. Purpose is to update the role of a member.
+ *
+ * @author Kevin Mattix
+ * @date 11-10-2020
  */
 public class GuildMemberJoin extends ListenerAdapter{
 

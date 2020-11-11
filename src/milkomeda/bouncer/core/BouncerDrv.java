@@ -18,14 +18,17 @@ import javax.security.auth.login.LoginException;
 
 /**
  * Entry class for JDA initialization.
+ *
+ * @author Kevin Mattix
+ * @date 11-10-2020
  */
 public class BouncerDrv{
 
 	/**
 	 * @param args Expecting a MySQL login info in order of IP, database, username, and password split by spaces.
 	 *
-	 * @throws LoginException
-	 * @throws InterruptedException
+	 * @throws LoginException Not able to log in.
+	 * @throws InterruptedException The thread is interrupted.
 	 */
 	public static void main(String[] args) throws LoginException, InterruptedException{
 		if(args.length < 4 || args.length > 5){

@@ -10,6 +10,9 @@ import java.util.List;
 
 /**
  * Sub class of {@code Command} that is used for the autorole functionality.
+ *
+ * @author Kevin Mattix
+ * @date 11-10-2020
  */
 public class AutoRole extends Command{
 

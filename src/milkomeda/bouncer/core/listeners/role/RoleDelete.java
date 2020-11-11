@@ -8,6 +8,9 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Class listener for when a role gets deleted.
+ *
+ * @author Kevin Mattix
+ * @date 11-10-2020
  */
 public class RoleDelete extends ListenerAdapter{
 

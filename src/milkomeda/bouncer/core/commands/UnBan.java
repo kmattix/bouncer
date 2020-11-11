@@ -8,6 +8,9 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 /**
  * Sub class of {@code Command} that is used for unbanning users, timed ban or not.
+ *
+ * @author Kevin Mattix
+ * @date 11-10-2020
  */
 public class UnBan extends Command{
 

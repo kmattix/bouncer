@@ -12,6 +12,9 @@ import java.util.List;
 
 /**
  * Utility class for the guilds table.
+ *
+ * @author Kevin Mattix
+ * @date 11-10-2020
  */
 public class GuildTable{
 

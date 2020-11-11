@@ -6,6 +6,9 @@ import java.sql.SQLException;
 
 /**
  * Data base connector class using the JDBC connector.
+ *
+ * @author Kevin Mattix
+ * @date 11-10-2020
  */
 public class DatabaseConnection{
 

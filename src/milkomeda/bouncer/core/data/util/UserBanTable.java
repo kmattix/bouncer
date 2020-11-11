@@ -10,6 +10,9 @@ import java.util.Date;
 
 /**
  * Utility class for the user_ban table.
+ *
+ * @author Kevin Mattix
+ * @date 11-10-2020
  */
 public class UserBanTable{
 
