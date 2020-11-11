@@ -1,6 +1,5 @@
 package milkomeda.bouncer.core.data;
 
-import java.net.PasswordAuthentication;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

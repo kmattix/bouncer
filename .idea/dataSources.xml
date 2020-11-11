@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="bouncer_test@45.79.203.213" uuid="e03e57f1-b9cf-46a4-8c04-aeeb18c276ed">
+    <data-source source="LOCAL" name="bouncer_test@45.79.203.213" uuid="3ea25196-cf7b-49a1-a0ca-d5e57dc1a362">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://45.79.203.213:3306/bouncer_test</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="bouncer@45.79.203.213" uuid="311b7071-99db-470b-8d48-0da11c08ce86">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://45.79.203.213:3306/bouncer</jdbc-url>
     </data-source>
   </component>
 </project>
